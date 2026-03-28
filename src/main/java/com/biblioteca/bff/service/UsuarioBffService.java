@@ -71,8 +71,10 @@ public class UsuarioBffService {
 
         HttpEntity<UsuarioDto> entity = new HttpEntity<>(body, headers);
 
+        String url = funUsuarios + "/" + id;
+
         ResponseEntity<UsuarioDto> response = restTemplate.exchange(
-                funUsuarios,
+                url,
                 HttpMethod.PUT,
                 entity,
                 UsuarioDto.class
