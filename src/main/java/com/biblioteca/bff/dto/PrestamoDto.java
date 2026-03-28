@@ -4,9 +4,9 @@ public class PrestamoDto {
     private Integer id;
     private String fechaPrestamo;
     private String fechaEntrega;
-    private Integer usuariosId;
-    private Integer librosId;
-    private Integer clientesId;
+    private Integer usuarioId;
+    private Integer libroId;
+    private Integer clienteId;
 
     public Integer getId() {
         return id;
@@ -32,27 +32,27 @@ public class PrestamoDto {
         this.fechaEntrega = fechaEntrega;
     }
 
-    public Integer getUsuariosId() {
-        return usuariosId;
+    public Integer getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setUsuariosId(Integer usuariosId) {
-        this.usuariosId = usuariosId;
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
-    public Integer getLibrosId() {
-        return librosId;
+    public Integer getLibroId() {
+        return libroId;
     }
 
-    public void setLibrosId(Integer librosId) {
-        this.librosId = librosId;
+    public void setLibroId(Integer libroId) {
+        this.libroId = libroId;
     }
 
-    public Integer getClientesId() {
-        return clientesId;
+    public Integer getClienteId() {
+        return clienteId;
     }
 
-    public void setClientesId(Integer clientesId) {
-        this.clientesId = clientesId;
+    public void setClienteId(Integer clienteId) {
+        this.clienteId = clienteId;
     }
 }

@@ -3,9 +3,6 @@ package com.biblioteca.bff.service;
 import java.util.List;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,9 +65,9 @@ public class PrestamoBffService {
         body.setId(id);
         body.setFechaPrestamo(request.getFechaPrestamo());
         body.setFechaEntrega(request.getFechaEntrega());
-        body.setUsuariosId(request.getUsuariosId());
-        body.setLibrosId(request.getLibrosId());
-        body.setClientesId(request.getClientesId());
+        body.setUsuarioId(request.getUsuarioId());
+        body.setLibroId(request.getLibroId());
+        body.setClienteId(request.getClienteId());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -97,6 +94,24 @@ public class PrestamoBffService {
                 HttpMethod.DELETE,
                 null,
                 String.class
+        );
+
+        return response.getBody();
+    }
+
+    public PrestamoDto registrarDevolucion(Integer id, PrestamoDto request) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<PrestamoDto> entity = new HttpEntity<>(request, headers);
+
+        String url = funPrestamos + "/" + id + "/devolucion";
+
+        ResponseEntity<PrestamoDto> response = restTemplate.exchange(
+                url,
+                HttpMethod.PATCH,
+                entity,
+                PrestamoDto.class
         );
 
         return response.getBody();
