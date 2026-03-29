@@ -2,7 +2,7 @@ package com.biblioteca.bff.controller;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.biblioteca.bff.dto.PrestamoDto;
@@ -28,8 +28,7 @@ public class PrestamoBffController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public PrestamoDto crearPrestamo(@RequestBody PrestamoDto request) {
+    public ResponseEntity<?> crearPrestamo(@RequestBody PrestamoDto request) {
         return prestamoBffService.crearPrestamo(request);
     }
 
@@ -45,8 +44,9 @@ public class PrestamoBffController {
     }
 
     @PatchMapping("/{id}/devolucion")
-    public PrestamoDto registrarDevolucion(@PathVariable Integer id,
-                                           @RequestBody PrestamoDto request) {
+    public ResponseEntity<?> registrarDevolucion(@PathVariable Integer id,
+                                                 @RequestBody PrestamoDto request) {
+        System.out.println("Entró al endpoint devolucion con id: " + id);
         return prestamoBffService.registrarDevolucion(id, request);
     }
 }

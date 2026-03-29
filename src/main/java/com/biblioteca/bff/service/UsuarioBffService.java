@@ -1,15 +1,20 @@
 package com.biblioteca.bff.service;
 
+import java.util.Collections;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import com.biblioteca.bff.dto.UsuarioDto;
 import org.springframework.http.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.client.RestTemplate;
+
+import com.biblioteca.bff.dto.UsuarioDto;
 
 @Service
 public class UsuarioBffService {
+
     private final RestTemplate restTemplate;
 
     @Value("${azure.functions.usuarios.usuarios.url}")
@@ -19,80 +24,132 @@ public class UsuarioBffService {
         this.restTemplate = restTemplate;
     }
 
-    public List<UsuarioDto> obtenerUsuarios() {
-        ResponseEntity<List<UsuarioDto>> response = restTemplate.exchange(
-                funUsuarios,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<UsuarioDto>>() {}
-        );
+    public ResponseEntity<?> obtenerUsuarios() {
+        try {
+            ResponseEntity<List<UsuarioDto>> response = restTemplate.exchange(
+                    funUsuarios,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<UsuarioDto>>() {}
+            );
 
-        return response.getBody();
+            List<UsuarioDto> body = response.getBody();
+
+            return ResponseEntity
+                    .status(response.getStatusCode())
+                    .body(body != null ? body : Collections.emptyList());
+
+        } catch (RestClientResponseException e) {
+            return ResponseEntity
+                    .status(e.getStatusCode())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(e.getResponseBodyAsString());
+        }
     }
 
-    public UsuarioDto obtenerUsuarioPorId(Integer id) {
-        String url = funUsuarios + "/" + id;
+    public ResponseEntity<?> obtenerUsuarioPorId(Integer id) {
+        try {
+            String url = funUsuarios + "/" + id;
 
-        ResponseEntity<UsuarioDto> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                UsuarioDto.class
-        );
+            ResponseEntity<UsuarioDto> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null,
+                    UsuarioDto.class
+            );
 
-        return response.getBody();
+            return ResponseEntity
+                    .status(response.getStatusCode())
+                    .body(response.getBody());
+
+        } catch (RestClientResponseException e) {
+            return ResponseEntity
+                    .status(e.getStatusCode())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(e.getResponseBodyAsString());
+        }
     }
 
-    public UsuarioDto crearUsuario(UsuarioDto request) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+    public ResponseEntity<?> crearUsuario(UsuarioDto request) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<UsuarioDto> entity = new HttpEntity<>(request, headers);
+            HttpEntity<UsuarioDto> entity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<UsuarioDto> response = restTemplate.exchange(
-                funUsuarios,
-                HttpMethod.POST,
-                entity,
-                UsuarioDto.class
-        );
+            ResponseEntity<UsuarioDto> response = restTemplate.exchange(
+                    funUsuarios,
+                    HttpMethod.POST,
+                    entity,
+                    UsuarioDto.class
+            );
 
-        return response.getBody();
+            return ResponseEntity
+                    .status(response.getStatusCode())
+                    .body(response.getBody());
+
+        } catch (RestClientResponseException e) {
+            return ResponseEntity
+                    .status(e.getStatusCode())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(e.getResponseBodyAsString());
+        }
     }
 
-    public UsuarioDto actualizarUsuario(Integer id, UsuarioDto request) {
-        UsuarioDto body = new UsuarioDto();
-        body.setId(id);
-        body.setNombre(request.getNombre());
-        body.setEmail(request.getEmail());
-        body.setRol(request.getRol());
+    public ResponseEntity<?> actualizarUsuario(Integer id, UsuarioDto request) {
+        try {
+            UsuarioDto body = new UsuarioDto();
+            body.setId(id);
+            body.setNombre(request.getNombre());
+            body.setEmail(request.getEmail());
+            body.setRol(request.getRol());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<UsuarioDto> entity = new HttpEntity<>(body, headers);
+            HttpEntity<UsuarioDto> entity = new HttpEntity<>(body, headers);
 
-        String url = funUsuarios + "/" + id;
+            String url = funUsuarios + "/" + id;
 
-        ResponseEntity<UsuarioDto> response = restTemplate.exchange(
-                url,
-                HttpMethod.PUT,
-                entity,
-                UsuarioDto.class
-        );
+            ResponseEntity<UsuarioDto> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.PUT,
+                    entity,
+                    UsuarioDto.class
+            );
 
-        return response.getBody();
+            return ResponseEntity
+                    .status(response.getStatusCode())
+                    .body(response.getBody());
+
+        } catch (RestClientResponseException e) {
+            return ResponseEntity
+                    .status(e.getStatusCode())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(e.getResponseBodyAsString());
+        }
     }
 
-    public String eliminarUsuario(Integer id) {
-        String url = funUsuarios + "/" + id;
+    public ResponseEntity<?> eliminarUsuario(Integer id) {
+        try {
+            String url = funUsuarios + "/" + id;
 
-        ResponseEntity<String> response = restTemplate.exchange(
-                url,
-                HttpMethod.DELETE,
-                null,
-                String.class
-        );
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.DELETE,
+                    null,
+                    String.class
+            );
 
-        return response.getBody();
+            return ResponseEntity
+                    .status(response.getStatusCode())
+                    .body(response.getBody());
+
+        } catch (RestClientResponseException e) {
+            return ResponseEntity
+                    .status(e.getStatusCode())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(e.getResponseBodyAsString());
+        }
     }
 }
