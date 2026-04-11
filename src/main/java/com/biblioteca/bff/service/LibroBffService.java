@@ -154,4 +154,23 @@ public class LibroBffService {
                     .body(e.getResponseBodyAsString());
         }
     }
+
+    //creo este metodo ya que graphQL funciona mejor si el servicio devuelve directamente el objeto esperado y no un ResponseEntity
+    public LibroDto obtenerLibroPorId_GraphQL(Integer id) {
+        try {
+            String url = funLibros + "/" + id;
+
+            ResponseEntity<LibroDto> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null,
+                    LibroDto.class
+            );
+
+            return response.getBody();
+
+        } catch (RestClientResponseException e) {
+            throw new RuntimeException("Error al obtener libro por id: " + e.getResponseBodyAsString());
+        }
+    }
 }

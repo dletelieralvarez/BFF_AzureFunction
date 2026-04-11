@@ -1,0 +1,10 @@
+type Libro {
+    id: Int
+    titulo: String
+    autor: String
+}
+
+type Query {
+    obtenerLibros: [Libro]
+    obtenerLibroPorIdGraphQL(id: Int!): Libro
+}
