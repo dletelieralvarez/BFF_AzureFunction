@@ -5,6 +5,6 @@ type Libro {
 }
 
 type Query {
-    obtenerLibros: [Libro]
+    obtenerLibrosGraphQL: [Libro]
     obtenerLibroPorIdGraphQL(id: Int!): Libro
 }

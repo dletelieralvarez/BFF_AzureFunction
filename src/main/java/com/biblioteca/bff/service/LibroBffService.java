@@ -173,4 +173,20 @@ public class LibroBffService {
             throw new RuntimeException("Error al obtener libro por id: " + e.getResponseBodyAsString());
         }
     }
+
+    public List<LibroDto> obtenerLibrosGraphQL() {
+        try {
+            ResponseEntity<List<LibroDto>> response = restTemplate.exchange(
+                    funLibros,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<LibroDto>>() {}
+            );
+
+            return response.getBody() != null ? response.getBody() : Collections.emptyList();
+
+        } catch (RestClientResponseException e) {
+            throw new RuntimeException("Error al obtener libros: " + e.getResponseBodyAsString());
+        }
+    }
 }
