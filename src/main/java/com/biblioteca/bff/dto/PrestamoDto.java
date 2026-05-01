@@ -6,7 +6,7 @@ public class PrestamoDto {
     private String fechaEntrega;
     private Integer usuarioId;
     private Integer libroId;
-    private Integer clienteId;
+    private Integer clienteId;    
 
     public Integer getId() {
         return id;
